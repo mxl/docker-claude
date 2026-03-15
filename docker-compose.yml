@@ -1,0 +1,20 @@
+services:
+  claude:
+    build: .
+    image: claude-code-sandbox
+
+    volumes:
+      # Mount ~/.claude from host to persist auth tokens and config
+      - ${HOME}/.claude:/home/node/.claude
+
+    environment:
+      # Pass through ANTHROPIC_API_KEY if set on host (alternative to ~/.claude auth)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+
+    # Keep stdin open for interactive use
+    stdin_open: true
+    tty: true
+
+    # Resource limits — adjust to taste
+    mem_limit: 4g
+    cpus: "2.0"
